@@ -28,6 +28,7 @@ public class LibroService {
         return libroRepo.findAll();
     }
 
+
     public Libro findLibro(Long id) throws LibroNotFoundException {
         return libroRepo.findLibroById(id)
                 .orElseThrow(() -> new LibroNotFoundException("Libro con id '" + id + "' non trovato"));

@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 @Entity @Data @NoArgsConstructor @AllArgsConstructor
@@ -14,9 +15,13 @@ public class Libro implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(nullable = false, updatable = false)
     private Long id;
+    @NotBlank
     private String titolo;
+    @NotBlank
     private String autore;
+    @NotBlank
     private String genere;
+    @NotBlank
     private Double prezzo;
 
     @Override

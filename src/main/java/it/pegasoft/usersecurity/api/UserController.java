@@ -1,5 +1,6 @@
 package it.pegasoft.usersecurity.api;
 
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import it.pegasoft.usersecurity.model.Role;
 import it.pegasoft.usersecurity.model.RoleToUserForm;
 import it.pegasoft.usersecurity.model.User;
@@ -22,6 +23,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @RestController
 @RequiredArgsConstructor
+@SecurityRequirement(name = "userservice")
 @RequestMapping("/api")
 public class UserController {
 

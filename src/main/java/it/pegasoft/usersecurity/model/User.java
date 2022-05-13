@@ -5,6 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -14,7 +15,9 @@ public class User {
     @Column(nullable = false, updatable = false)
     private Long id;
     private String name;
+    @NotBlank
     private String username;
+    @NotBlank
     private String password;
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Role> role = new ArrayList<>();
