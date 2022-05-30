@@ -1,20 +1,11 @@
 package it.pegasoft.usersecurity.filter;
 
-import java.io.IOException;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -24,11 +15,20 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import lombok.extern.slf4j.Slf4j;
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFilter {
         private final AuthenticationManager authenticationManager;
+        Logger logger = LoggerFactory.getLogger(CustomAuthenticationFilter.class);
 
         public CustomAuthenticationFilter(AuthenticationManager authenticationManager) {
                 this.authenticationManager = authenticationManager;
@@ -40,11 +40,9 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
 
                 String username = request.getParameter("username");
                 String password = request.getParameter("password");
-                log.info("Username is: {}", username);
-                log.info("Password is: {}", password);
                 UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                                 username, password);
-
+                logger.info("User '{}' authentication attempt", username);
                 return authenticationManager.authenticate(authenticationToken);
         }
 
@@ -76,7 +74,8 @@ public class CustomAuthenticationFilter extends UsernamePasswordAuthenticationFi
                 tokens.put("refreshToken", refreshToken);
                 response.setContentType(MediaType.APPLICATION_JSON_VALUE);
                 new ObjectMapper().writeValue(response.getOutputStream(), tokens);
-
+                logger.info("User authentication : {}", user.getUsername());
+                logger.info("User '{}' logged", user.getUsername());
         }
 
 }

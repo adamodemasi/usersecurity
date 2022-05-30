@@ -40,13 +40,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        http.authorizeRequests().antMatchers("/api/login/**", "/api/token/refresh/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll();
+        http.authorizeRequests().antMatchers("/api/login/**", "/api/token/refresh/**", "/swagger-ui/**", "/api-docs/**", "/api-docs.yaml").permitAll();
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/user", "/api/libreria/all", "/api/libreria/find/**")
                 .hasAnyAuthority("ROLE_USER", "ROLE_ADMIN");
         http.authorizeRequests().antMatchers(HttpMethod.GET, "/api/user/find/**")
                 .hasAnyAuthority("ROLE_ADMIN");
-        http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/user/save/**", "/api/role/updateUser/**",
-                        "/api/libreria/add/**", "/api/libreria/update/**")
+        http.authorizeRequests().antMatchers(HttpMethod.POST, "/api/user/save/**", "/api/role/updateUser/**", "/api/libreria/add/**")
+                .hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeRequests().antMatchers(HttpMethod.PATCH, "/api/libreria/update/**")
                 .hasAnyAuthority("ROLE_ADMIN");
         http.authorizeRequests().antMatchers(HttpMethod.DELETE, "/api/user/delete/**", "/api/libreria/delete/**")
                 .hasAnyAuthority("ROLE_ADMIN");
